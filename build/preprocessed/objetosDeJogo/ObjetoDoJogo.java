@@ -9,6 +9,7 @@ import java.io.IOException;
  import java.util.Random;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.game.Sprite;
 /**
  *
  * @author u12175
@@ -21,14 +22,22 @@ public abstract class ObjetoDoJogo {
     private double angulo; //angulo é em radianos
     private int velocidade;
     private String caminhoImagem;
+    protected Sprite spt;
+    private boolean movendo; 
 
     public ObjetoDoJogo(int posicaoX, int posicaoY,int raio, double angulo, String caminhoImagem) {
         this.posicaoX = posicaoX;
         this.posicaoY = posicaoY;
         this.raio = raio;
         this.angulo = angulo;
-        this.velocidade=0;
+        this.velocidade = 0;
         this.caminhoImagem = caminhoImagem;
+        //this.movendo = ;
+        try {
+            this.spt    = new Sprite(Image.createImage(caminhoImagem));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     public void gerarPosicaoAleatoria(int maxX,int maxY){   //gera um x e um Y aleatório
@@ -57,7 +66,8 @@ public abstract class ObjetoDoJogo {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        g.drawImage(img,posicaoX,posicaoY,0);
+        
+        spt.paint(g);
     }
 
     public int getRaio() {
@@ -95,7 +105,13 @@ public abstract class ObjetoDoJogo {
     public void setVelocidade(int velocidade){
         this.velocidade = velocidade;
     }    
-    
-    
+
+    public boolean isMovendo() {
+        return movendo;
+    }
+
+    public void setMovendo(boolean movendo) {
+        this.movendo = movendo;
+    }
     
 }

@@ -6,6 +6,8 @@
 
 package objetosDeJogo;
 
+import javax.microedition.lcdui.Graphics;
+
 /**
  *
  * @author u12175
@@ -22,5 +24,4 @@ public class Asteroid extends ObjetoDoJogo{
         super(posicaoX, posicaoY, raio, angulo,IMAGEM_ASTEROID);
         IMAGEM_ASTEROID += qual + ".png";
     }
-    
 }

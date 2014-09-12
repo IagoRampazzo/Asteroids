@@ -24,10 +24,10 @@ public class Menu extends Estado {
 
     public Menu(Manipulador manip) {
         this.nomeMusica = "/menuMusic.mp3";
-        this.manip      = manip;
+        this.manip = manip;
         try {
-            this.fundo.url  = "/fundoMenu.png";
-            this.fundo.img  = Image.createImage(this.fundo.url);
+            this.fundo.url = "/fundoMenu.png";
+            this.fundo.img = Image.createImage(this.fundo.url);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -35,13 +35,13 @@ public class Menu extends Estado {
 
     protected void desenhar(Graphics g) {
         g.drawImage(this.fundo.img, 0, 0, 0);
-        for (int i = 0; i < menu.length; i++){
-           if (opcaoAtual == i)
-               g.setColor(100, 155, 155);
-           else
-               g.setColor(255, 255, 255);
-           
-           g.drawString(menu[i], Tela.largura / 2 - 25, Tela.altura / 2 + i * 20, 0);
+        for (int i = 0; i < menu.length; i++) {
+            if (opcaoAtual == i)
+                g.setColor(100, 155, 155);
+            else
+                g.setColor(255, 255, 255);
+
+            g.drawString(menu[i], Tela.largura / 2 - 25, Tela.altura / 2 + i * 20, 0);
         }
     }
 
@@ -56,8 +56,8 @@ public class Menu extends Estado {
             if (opcaoAtual < 0) {
                 opcaoAtual = menu.length - 1;
             }
-        } else if ((tecla & GameCanvas.FIRE_PRESSED) != 0){
-             manip.setEstadoAtual(1);
+        } else if ((tecla & GameCanvas.FIRE_PRESSED) != 0) {
+            manip.setEstadoAtual(1);
         }
     }
 
