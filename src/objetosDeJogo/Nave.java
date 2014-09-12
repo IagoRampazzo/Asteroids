@@ -34,17 +34,27 @@ public class Nave extends ObjetoDoJogo {
         quantasVidas = VIDA_INICIAL;
     }
 
+    
+
     public void atirar() {
         Tiro novoTiro = new Tiro(this.getX(), this.getY(), this.getAngulo());
-        tiros[tiroAtual] = novoTiro;
-        tiroAtual++;
-        if (tiroAtual > MAXIMO_DE_TIROS) //faz a reciclagem dos tiros, possui o máximo possível
-        {
-            tiroAtual = 0;
+        int indiceNovoTiro = tiroAtual;
+        for (int i = 0; i < MAXIMO_DE_TIROS; i++) {
+            if (tiros[i].estaMorto()) {      //faz a reciclagem dos tiros
+                indiceNovoTiro = i;         //se um tiro estiver morto será substituído pelo novo
+                break;
+            }
         }
+        tiros[indiceNovoTiro] = novoTiro;
+        tiroAtual++;
+        if (tiroAtual > MAXIMO_DE_TIROS) {
+            
+        }
+        tiroAtual = 0;
     }
 
-    public void perderVida() {
+
+public void perderVida() {
         quantasVidas--;
     }
 
