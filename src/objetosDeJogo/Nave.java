@@ -21,16 +21,23 @@ public class Nave extends ObjetoDoJogo{
 
     public Nave(int posicaoX, int posicaoY, int raio, double angulo) {
         super(posicaoX, posicaoY, raio, angulo, IMAGEM_NAVE);
-        tiros = new Tiro[MAXIMO_DE_TIROS];          //haverá, no máximo 8 tiros (V 1.0)
+        tiros = new Tiro[MAXIMO_DE_TIROS];          //haverá no máximo 8 tiros (V 1.0)
         tiroAtual=0;
         quantasVidas = VIDA_INICIAL;
     }
     
     public void atirar(){
         Tiro novoTiro = new Tiro(this.getX(),this.getY(),this.getAngulo());
-        tiros[tiroAtual] = novoTiro;    
+        int indiceNovoTiro = tiroAtual;
+        for(int i=0;i<MAXIMO_DE_TIROS;i++){
+            if (tiros[i].estaMorto()){      //faz a reciclagem dos tiros
+                indiceNovoTiro = i;         //se um tiro estiver morto será substituído pelo novo
+                break;
+            }
+        }
+        tiros[indiceNovoTiro] = novoTiro;    
         tiroAtual++;
-        if (tiroAtual>MAXIMO_DE_TIROS)      //faz a reciclagem dos tiros, possui o máximo possível
+        if (tiroAtual>MAXIMO_DE_TIROS)      
             tiroAtual = 0;
     }
     

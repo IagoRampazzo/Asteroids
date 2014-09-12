@@ -31,7 +31,7 @@ public abstract class ObjetoDoJogo {
         this.caminhoImagem = caminhoImagem;
     }
     
-    public void gerarPosicaoAleatoria(int maxX,int maxY){   //gera um x e um Y aleatório
+    public void setarPosicaoAleatoria(int maxX,int maxY){   //gera um x e um Y aleatório
        posicaoX = new Random().nextInt(maxX);
        posicaoY = new Random().nextInt(maxY);
     }
@@ -54,10 +54,10 @@ public abstract class ObjetoDoJogo {
         Image img = null;
         try {
             img = Image.createImage(caminhoImagem);
+            g.drawImage(img,posicaoX,posicaoY,0);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        g.drawImage(img,posicaoX,posicaoY,0);
     }
 
     public int getRaio() {
