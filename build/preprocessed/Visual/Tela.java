@@ -5,11 +5,11 @@
  */
 package Visual;
 
-import Estados.Fase;
 import Estados.Menu;
 import ManipEstado.Manipulador;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.game.GameCanvas;
+import javax.microedition.lcdui.game.LayerManager;
 
 /**
  *
@@ -21,18 +21,21 @@ public class Tela extends GameCanvas implements Runnable {
     public static int altura;
     private boolean rodando;
     private Manipulador manip;
+    private LayerManager lm;
 
     public Tela(boolean suppressKeyEvents) {
         super(suppressKeyEvents);
 
         this.altura     = getHeight();
         this.largura    = getWidth();
+        System.out.println("Altura " + altura);
         this.rodando    = true;
         
         // Setamos os "Layouts do jogo" (Menu,Ranking,Ajuda,Jogo)
-        this.manip      = new Manipulador(2);
-        this.manip.adicionar(new Menu(this.manip));
-        this.manip.adicionar(new Fase(this.manip));
+        this.lm = new LayerManager();
+        this.lm.setViewWindow(0, 0, largura, altura);
+        this.manip = new Manipulador(5);
+        this.manip.adicionar(new Menu(this.manip,lm));
     }
 
     public void run() {
@@ -40,8 +43,9 @@ public class Tela extends GameCanvas implements Runnable {
         while (this.rodando) {
             lerTeclado();
             desenhar(g);
+            atualizar();
             try {
-                Thread.sleep(150);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
@@ -58,4 +62,8 @@ public class Tela extends GameCanvas implements Runnable {
         manip.lerTeclado(tecla);
     }
 
+    public void atualizar(){
+        manip.atualizar();
+    }
+    
 }

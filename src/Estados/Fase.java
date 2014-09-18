@@ -26,8 +26,6 @@ import objetosDeJogo.Nave;
 public class Fase extends Estado {
 
     private final Nave n;
-    private int tempoAnterior;
-    private final int fatorDeCorrecao = 20;
     private Asteroid[] grandes;
     private Asteroid[] medios;
     private Asteroid[] pequenos;
@@ -62,47 +60,24 @@ public class Fase extends Estado {
         this.v.addElement(grandes[0]);
         this.v.addElement(grandes[1]);
 
-        lm.append(((Asteroid)v.elementAt(0)).getSpt());
-        lm.append(((Asteroid)v.elementAt(1)).getSpt());
+        lm.append(((Asteroid) v.elementAt(0)).getSpt());
+        lm.append(((Asteroid) v.elementAt(1)).getSpt());
         lm.append(n.getSpt());
     }
 
     protected void desenhar(Graphics g) {
         g.drawImage(this.fundo.img, 0, 0, 0);
         lm.paint(g, 0, 0);
-        /*n.desenhar(g);
-         //        lm.paint(g, 100, 100);
-
-         for (int indiceGrande = 0; indiceGrande < grandes.length; indiceGrande++) {
-         if (grandes[indiceGrande] != null && grandes[indiceGrande].isVivo()) {
-         grandes[indiceGrande].desenhar(g);
-         }
-         }
-         for (int indiceMedio = 0; indiceMedio < medios.length; indiceMedio++) {
-         if (medios[indiceMedio] != null) {
-         System.out.println("Medio [" + indiceMedio + "] " + medios[indiceMedio].isVivo());
-         }
-         if (medios[indiceMedio] != null && medios[indiceMedio].isVivo()) {
-         System.out.println("Desenhou o médio");
-         medios[indiceMedio].desenhar(g);
-         }
-         }
-         for (int indicePequeno = 0; indicePequeno < pequenos.length; indicePequeno++) {
-         if (pequenos[indicePequeno] != null && pequenos[indicePequeno].isVivo()) {
-         pequenos[indicePequeno].desenhar(g);
-         }
-         }*/
     }
 
     protected void lerTeclado(int tecla) {
-        int agora = (int) System.currentTimeMillis();
 
         if ((tecla & GameCanvas.DOWN_PRESSED) != 0) {
             n.getSpt().setTransform(Sprite.TRANS_ROT180);
 
-            //n.getSpt().move((int) (n.getY() + Nave.VELOCIDADE * ((agora - tempoAnterior) / fatorDeCorrecao)), n.getSpt().getX());
-            n.getSpt().setPosition(n.getSpt().getX(), (int) (n.getY() + Nave.VELOCIDADE));
-            if (n.getSpt().getY() + n.getALTURA() >= Tela.altura) {
+            n.getSpt().move(0, (int) Nave.VELOCIDADE);
+
+            if (n.getSpt().getY() > Tela.altura - n.getALTURA()) {
                 n.getSpt().setPosition(n.getSpt().getX(), Tela.altura - n.getALTURA());
             }
             n.setOrientacao(1);
@@ -110,9 +85,9 @@ public class Fase extends Estado {
         if ((tecla & GameCanvas.UP_PRESSED) != 0) {
             n.getSpt().setTransform(Sprite.TRANS_NONE);
 
-            n.getSpt().setPosition((int) (n.getY() - Nave.VELOCIDADE), n.getSpt().getX());
-//            n.getSpt().move((int) (n.getY() - Nave.VELOCIDADE * ((agora - tempoAnterior) / fatorDeCorrecao)), n.getSpt().getX());
-            if (n.getSpt().getY() <= 0) {
+            n.getSpt().move(0, (int) -Nave.VELOCIDADE);
+
+            if (n.getSpt().getY() < 0) {
                 n.getSpt().setPosition(n.getSpt().getX(), 0);
             }
             n.setOrientacao(0);
@@ -121,10 +96,10 @@ public class Fase extends Estado {
         if ((tecla & GameCanvas.LEFT_PRESSED) != 0) {
             n.getSpt().setTransform(Sprite.TRANS_ROT270);
 
-            n.getSpt().setPosition(n.getSpt().getY(), (int) (n.getX() - Nave.VELOCIDADE));
-//            n.getSpt().move(n.getSpt().getY(), (int) (n.getX() - Nave.VELOCIDADE * ((agora - tempoAnterior) / fatorDeCorrecao)));
-            if (n.getSpt().getX() <= 0) {
-                n.getSpt().setPosition(n.getSpt().getY(), 0);
+            n.getSpt().move((int) -Nave.VELOCIDADE, 0);
+
+            if (n.getSpt().getX() < 0) {
+                n.getSpt().setPosition(0, n.getSpt().getY());
             }
             n.setOrientacao(3);
 
@@ -132,10 +107,10 @@ public class Fase extends Estado {
         if ((tecla & GameCanvas.RIGHT_PRESSED) != 0) {
             n.getSpt().setTransform(Sprite.TRANS_ROT90);
 
-            n.getSpt().setPosition(n.getSpt().getY(), (int) (n.getX() + Nave.VELOCIDADE));
-//            n.getSpt().move(n.getSpt().getY(), (int) (n.getX() + Nave.VELOCIDADE * ((agora - tempoAnterior) / fatorDeCorrecao)));
-            if (n.getSpt().getX() >= Tela.largura - n.getLARGURA()) {
-                n.getSpt().setPosition(n.getSpt().getY(), Tela.largura - n.getLARGURA());
+            n.getSpt().move((int) Nave.VELOCIDADE, 0);
+
+            if (n.getSpt().getX() > Tela.largura - n.getLARGURA()) {
+                n.getSpt().setPosition(Tela.largura - n.getLARGURA(), n.getSpt().getY());
             }
             n.setOrientacao(2);
 
@@ -145,8 +120,6 @@ public class Fase extends Estado {
         }
 
         n.atualizar();
-        //n.getSpt().move(0, 0);
-        this.tempoAnterior = agora;
     }
 
     protected void tocarMusica() {
@@ -157,13 +130,29 @@ public class Fase extends Estado {
         //Atualizar todos os objetos da fase
 
         //Atualizar nave
-        for (int i = 0; i < v.size(); i++) {
+        if (v != null)
+        for (int i = 0; i < v.size(); ++i) {
             Asteroid a = (Asteroid) v.elementAt(i);
             if (a != null) {
                 a.atualizar();
+                if (a.getSpt().collidesWith(n.getSpt(), true)) {
+                    Asteroid[] ast = a.morrer();
+                    a.getSpt().setPosition(-100, -100);
+                    v.removeElement(a);
+                    lm.remove(a.getSpt());
+                    if (ast == null) {
+                        System.out.println("ERRO"); 
+                    } else {
+                        for (int indice = 0; indice < ast.length; indice++) {
+                            v.addElement(ast[indice]);
+                            lm.append(ast[indice].getSpt());
+                        }
+                    }
+                    n.perderVida();
+                }
             }
         }
-        n.atualizar();
+//        n.atualizar();
         // Atualizar os 3 vetores de asteroids
         /*for (int indiceGrande = 0; indiceGrande < grandes.length; indiceGrande++) {
          if (grandes[indiceGrande] != null && grandes[indiceGrande].isVivo()) {
@@ -200,8 +189,12 @@ public class Fase extends Estado {
 
         if (n.getQuantasVidas() <= 0) {
             System.out.println("SAIU DA FASE");
-            manip.setEstadoAtual(0);
+            manip.adicionar(new Menu(manip, lm));
+            manip.setEstadoAtual(manip.getEstadoAtual()+1);    
+        }else if (v.size() <= 0){ // Ganhou
+            System.out.println("GANHOU");
         }
+            
         n.atualizar();
     }
 

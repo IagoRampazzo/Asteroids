@@ -6,9 +6,7 @@
 package objetosDeJogo;
 
 import Visual.Tela;
-import java.io.IOException;
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
 
 /**
  *
@@ -19,7 +17,7 @@ public class Nave extends ObjetoDoJogo {
     // Constantes
     private static final int MAXIMO_DE_TIROS = 5;
     private static final int VIDA_INICIAL = 3;
-    public static final double VELOCIDADE = 2;
+    public static final double VELOCIDADE = 5;
     private static final String IMAGEM_NAVE = "/nave.png";
 
     private Tiro tiros[];
@@ -41,6 +39,7 @@ public class Nave extends ObjetoDoJogo {
         }
 
         this.orientacao = 0;
+        this.spt.defineReferencePixel(LARGURA/2, ALTURA/2);
     }
 
     public void atirar() {
@@ -70,8 +69,7 @@ public class Nave extends ObjetoDoJogo {
 
     public void perderVida() {
         quantasVidas--;
-        getSpt().move(Tela.largura / 2,getSpt().getY());
-        getSpt().move(getSpt().getX(),Tela.altura / 2);
+        getSpt().setPosition(Tela.largura / 2,Tela.altura / 2);
         System.out.println("Quantas vidas " + quantasVidas);
     }
 
@@ -93,12 +91,8 @@ public class Nave extends ObjetoDoJogo {
 
     public void atualizar() {
         //this.spt.move(this.getX(), this.getY());
-//        System.out.println("X E Y = " + this.spt.getX() + " / " + this.spt.getY());
-
-        // Verificar se está dentro da tela.
-        //if (getSpt().getX() >= Tela.largura){
         
-        //}
+
             
         qtosTiros = 0;
         for (int i = 0; i < MAXIMO_DE_TIROS; i++) {

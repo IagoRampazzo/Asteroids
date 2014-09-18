@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.GameCanvas;
+import javax.microedition.lcdui.game.LayerManager;
 
 /**
  *
@@ -22,9 +23,10 @@ public class Menu extends Estado {
     private final String[] menu = {"Jogar", "Ranking", "Ajuda", "Sair"};
     private int opcaoAtual;
 
-    public Menu(Manipulador manip) {
+    public Menu(Manipulador manip,LayerManager lm) {
         this.nomeMusica = "/menuMusic.mp3";
         this.manip = manip;
+        this.lm = lm;
         try {
             this.fundo.url = "/fundoMenu.png";
             this.fundo.img = Image.createImage(this.fundo.url);
@@ -36,10 +38,11 @@ public class Menu extends Estado {
     protected void desenhar(Graphics g) {
         g.drawImage(this.fundo.img, 0, 0, 0);
         for (int i = 0; i < menu.length; i++) {
-            if (opcaoAtual == i)
+            if (opcaoAtual == i) {
                 g.setColor(100, 155, 155);
-            else
+            } else {
                 g.setColor(255, 255, 255);
+            }
 
             g.drawString(menu[i], Tela.largura / 2 - 25, Tela.altura / 2 + i * 20, 0);
         }
@@ -48,21 +51,26 @@ public class Menu extends Estado {
     protected void lerTeclado(int tecla) {
         if ((tecla & GameCanvas.DOWN_PRESSED) != 0) {
             opcaoAtual++;
-            if (opcaoAtual >= menu.length) {
-                opcaoAtual = 0;
-            }
+
         } else if ((tecla & GameCanvas.UP_PRESSED) != 0) {
             opcaoAtual--;
-            if (opcaoAtual < 0) {
-                opcaoAtual = menu.length - 1;
-            }
+
         } else if ((tecla & GameCanvas.FIRE_PRESSED) != 0) {
-            manip.setEstadoAtual(1);
+            this.manip.adicionar(new Fase(manip,lm));
+            this.manip.setEstadoAtual(manip.getEstadoAtual() + 1);
         }
     }
 
     protected void tocarMusica() {
 
+    }
+
+    protected void atualizar() {
+        if (opcaoAtual >= menu.length) {
+            opcaoAtual = 0;
+        } else if (opcaoAtual < 0) {
+            opcaoAtual = menu.length - 1;
+        }
     }
 
 }

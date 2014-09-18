@@ -61,6 +61,10 @@ public class Manipulador {
          vetManip[estadoAtual].lerTeclado(tecla);
     }
     
+    public void atualizar(){
+         vetManip[estadoAtual].atualizar();
+    }
+    
     public Estado getEstado(){
          return vetManip[estadoAtual];
     }
