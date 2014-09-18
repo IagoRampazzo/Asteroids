@@ -7,6 +7,7 @@ package ManipEstado;
 
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.game.LayerManager;
 
 /**
  *
@@ -17,6 +18,7 @@ public abstract class Estado {
     protected String nomeMusica;
     protected Imagem fundo = new Imagem();
     protected Manipulador manip;
+    protected LayerManager lm;
 
     protected class Imagem {
 
@@ -31,4 +33,5 @@ public abstract class Estado {
 
     protected abstract void tocarMusica();
 
+    protected abstract void atualizar();
 }
