@@ -34,7 +34,7 @@ public class Tela extends GameCanvas implements Runnable {
         // Setamos os "Layouts do jogo" (Menu,Ranking,Ajuda,Jogo)
         this.lm = new LayerManager();
         this.lm.setViewWindow(0, 0, largura, altura);
-        this.manip = new Manipulador(5);
+        this.manip = new Manipulador(50);
         this.manip.adicionar(new Menu(this.manip,lm));
     }
 
@@ -53,6 +53,7 @@ public class Tela extends GameCanvas implements Runnable {
     }
 
     public void desenhar(Graphics g) {
+        g.fillRect(0, 0, 240, 320);
         manip.desenhar(g);
         flushGraphics();
     }

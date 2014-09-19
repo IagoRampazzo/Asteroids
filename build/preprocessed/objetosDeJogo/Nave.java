@@ -44,8 +44,8 @@ public class Nave extends ObjetoDoJogo {
 
     public void atirar() {
         if (qtosTiros >= MAXIMO_DE_TIROS) {
-            tiros[0].setX(getX());
-            tiros[0].setY(getY());
+            tiros[0].setxPrimitivo(spt.getX());
+            tiros[0].setyPrimitivo(spt.getY());
             tiros[0].setAngulo(getAngulo());
             tiros[0].setOrientacao(orientacao);
             tiros[0].nascer();
@@ -53,8 +53,8 @@ public class Nave extends ObjetoDoJogo {
             for (int i = 0; i < MAXIMO_DE_TIROS; i++) {
                 if (tiros[i].estaMorto()) {      //faz a reciclagem dos tiros
 
-                    tiros[i].setX(getX());
-                    tiros[i].setY(getY());
+                    tiros[i].setxPrimitivo(spt.getX());
+                    tiros[i].setyPrimitivo(spt.getY());
                     tiros[i].setAngulo(getAngulo());
                     tiros[i].setOrientacao(orientacao);
                     tiros[i].nascer();

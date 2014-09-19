@@ -27,6 +27,7 @@ public class Tiro extends ObjetoDoJogo {
         this.orientacao = orientacao;
         this.xPrimitivo = posicaoX;
         this.yPrimitivo = posicaoY;
+        this.spt.setPosition(xPrimitivo, yPrimitivo);
         this.distanciaPercorrida = 0;
         this.ALTURA  = 8;
         this.LARGURA = 8;
@@ -34,6 +35,7 @@ public class Tiro extends ObjetoDoJogo {
 
     public void matarTiro() {
         estado = 0;
+        this.spt.setPosition(-100, -100);
     }
 
     public boolean estaMorto() {
@@ -48,16 +50,16 @@ public class Tiro extends ObjetoDoJogo {
            distanciaPercorrida = 0;
         } else {
             if (orientacao == 0) { // CIMA
-                this.setY(getY() - 10);
+                this.getSpt().move(0,-10);
             }
             if (orientacao == 1) { // BAIXO
-                this.setY(getY() + 10);
+                this.getSpt().move(0,10);
             }
             if (orientacao == 2) { // DIREITA
-                this.setX(getX() + 10);
+                this.getSpt().move(10,0);
             }
             if (orientacao == 3) { // ESQUEDA
-                this.setX(getX() - 10);
+                this.getSpt().move(- 10,0);
             }
             distanciaPercorrida += 10;
         }
@@ -69,6 +71,7 @@ public class Tiro extends ObjetoDoJogo {
 
     public void nascer() {
         this.estado = 1;
+        this.spt.setPosition(xPrimitivo, yPrimitivo);
     }
 
     public int getOrientacao() {
