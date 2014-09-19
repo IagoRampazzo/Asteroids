@@ -28,7 +28,6 @@ public class Tela extends GameCanvas implements Runnable {
 
         this.altura     = getHeight();
         this.largura    = getWidth();
-        System.out.println("Altura " + altura);
         this.rodando    = true;
         
         // Setamos os "Layouts do jogo" (Menu,Ranking,Ajuda,Jogo)
@@ -41,6 +40,8 @@ public class Tela extends GameCanvas implements Runnable {
     public void run() {
         Graphics g = getGraphics();
         while (this.rodando) {
+            if (manip.getEstadoAtual() < 0)
+                this.rodando = false;
             lerTeclado();
             desenhar(g);
             atualizar();

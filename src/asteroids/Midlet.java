@@ -31,7 +31,7 @@ public class Midlet extends MIDlet implements CommandListener {
            this.display.setCurrent(tela);
         }
     }
-
+   
     public void pauseApp() {
     }
 

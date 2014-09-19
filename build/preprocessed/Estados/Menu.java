@@ -20,13 +20,14 @@ import javax.microedition.lcdui.game.LayerManager;
  */
 public class Menu extends Estado {
 
-    private final String[] menu = {"Jogar", "Ranking", "Ajuda", "Sair"};
+    private final String[] menu = {"Jogar", "Sair"};
     private int opcaoAtual;
 
-    public Menu(Manipulador manip,LayerManager lm) {
+    public Menu(Manipulador manip, LayerManager lm) {
         this.nomeMusica = "/menuMusic.mp3";
         this.manip = manip;
-        this.lm = lm;
+        this.lm = new LayerManager();
+        this.lm.setViewWindow(0, 0, 240, 320);
         try {
             this.fundo.url = "/fundoMenu.png";
             this.fundo.img = Image.createImage(this.fundo.url);
@@ -56,8 +57,11 @@ public class Menu extends Estado {
             opcaoAtual--;
 
         } else if ((tecla & GameCanvas.FIRE_PRESSED) != 0) {
-            this.manip.adicionar(new Fase(manip,lm));
-            this.manip.setEstadoAtual(manip.getEstadoAtual() + 1);
+            if (opcaoAtual == 0) {
+                this.manip.adicionar(new Fase(manip, lm));
+                this.manip.setEstadoAtual(manip.getEstadoAtual() + 1);
+            }else
+                this.manip.setEstadoAtual(-1);
         }
     }
 
